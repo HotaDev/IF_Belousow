@@ -1,8 +1,10 @@
-package cars;
+package cars.models;
+
+import cars.Car;
 
 public class Suzuki extends Car {
 
-    public String country = "Япония";
+    private final String country = "Япония";
 
     public Suzuki (int ageRelease, String transmission, String model, String color, int power, int mileage) {
         super(ageRelease, transmission, model, color, power, mileage);

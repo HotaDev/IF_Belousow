@@ -1,12 +1,12 @@
 package cars;
 
 public abstract class Car {
-    public int ageRelease;
-    public String transmission;
-    public String model;
-    public String color;
-    public int power;
-    public int mileage;
+    private final int ageRelease;
+    private final String transmission;
+    private final String model;
+    private String color;
+    private final int power;
+    private final int mileage;
 
     public Car(int ageRelease, String transmission, String model, String color, int power, int mileage) {
         this.ageRelease = ageRelease;
@@ -15,10 +15,6 @@ public abstract class Car {
         this.color = color;
         this.power = power;
         this.mileage = mileage;
-    }
-
-    public void changeColor(String color) {
-        this.color = color;
     }
 
     public void getInfo() {
@@ -56,6 +52,5 @@ public abstract class Car {
         }
         System.out.println("/////////////////");
     }
-
-
+    
 }
