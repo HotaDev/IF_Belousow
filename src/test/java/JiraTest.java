@@ -1,8 +1,5 @@
 import org.junit.jupiter.api.Test;
-import pages.JiraLoginPage;
-import pages.JiraMainPage;
-import pages.JiraSearchPage;
-import pages.JiraTaskPage;
+import pages.*;
 
 public class JiraTest extends WebHooks {
 
@@ -10,6 +7,7 @@ public class JiraTest extends WebHooks {
     JiraMainPage jiraMainPage = new JiraMainPage();
     JiraTaskPage jiraTaskPage = new JiraTaskPage();
     JiraSearchPage jiraSearchPage = new JiraSearchPage();
+    JiraNewTaskPage jiraNewTaskPage = new JiraNewTaskPage();
 
     @Test
     public void firstTaskTest() {
@@ -35,5 +33,15 @@ public class JiraTest extends WebHooks {
         jiraMainPage.goProjTest();
         jiraTaskPage.checkTasks();
         jiraSearchPage.findTask();
+    }
+
+    @Test
+    public void fifthTaskTest() {
+        jiraLoginPage.login();
+        jiraMainPage.goProjTest();
+        jiraTaskPage.checkTasks();
+        jiraSearchPage.findTask();
+        jiraMainPage.goProjTest();
+        jiraNewTaskPage.createTask();
     }
 }
