@@ -1,8 +1,6 @@
 package pages;
 
-import com.codeborne.selenide.Command;
 import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.Assertions;
 
