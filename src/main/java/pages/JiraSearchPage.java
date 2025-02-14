@@ -1,9 +1,9 @@
 package pages;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.Assertions;
 import java.time.Duration;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class JiraSearchPage {
@@ -19,17 +19,13 @@ public class JiraSearchPage {
     private final SelenideElement fixVersion = $x("//span[@class='shorten']/a").
             as("Исправить");
 
-    public void findTask() {
+    public void findTask(String task) {
 
-        allFilter.shouldBe(Condition.exist, Duration.ofSeconds(5));
-        allFilter.click();
-        searchInput.shouldBe(Condition.exist, Duration.ofSeconds(5));
-        searchInput.setValue("TestSeleniumATHomework");
+        allFilter.shouldBe(visible, Duration.ofSeconds(10)).click();
+        searchInput.shouldBe(visible, Duration.ofSeconds(10)).setValue(task);
         buttonSearch.click();
         String stat = status.getText();
         String fix = fixVersion.getText();
-        System.out.println("Статус: " + stat);
-        System.out.println("Исправить в версиях: " + fix);
 
         Assertions.assertEquals("СДЕЛАТЬ", stat, "Задача не правильная");
         Assertions.assertEquals("Version 2.0", fix, "Задача не правильная");

@@ -1,10 +1,10 @@
 package pages;
 
 import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.Assertions;
 import java.time.Duration;
-
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
@@ -25,6 +25,10 @@ public class JiraNewTaskPage {
             as("Тема");
     private final SelenideElement version = $x("//option[@value='10001']").
             as("Версия");
+    private final SelenideElement iframe = $x("//iframe").
+            as("Фрейм");
+    private final SelenideElement iframeElem = $x("//body").
+            as("Элемент фрейма");
     private final ElementsCollection visual = $$x("//button[text()='Визуальный']").
             as("Визуальный");
     private final SelenideElement createTask = $x("//input[@value='Создать']").
@@ -44,43 +48,51 @@ public class JiraNewTaskPage {
 
     public void createTask() {
 
-        changeFilter.shouldBe(exist, Duration.ofSeconds(5));
-        changeFilter.click();
-        allTasks.shouldBe(exist, Duration.ofSeconds(5));
-        allTasks.click();
-        title.shouldBe(exist, Duration.ofSeconds(5));
+        changeFilter.shouldBe(visible, Duration.ofSeconds(10)).click();
+        allTasks.shouldBe(visible, Duration.ofSeconds(10)).click();
+        title.shouldBe(exist, Duration.ofSeconds(10));
         createButton.click();
 
-        typeTask.shouldBe(exist, Duration.ofSeconds(5));
+        typeTask.shouldBe(visible, Duration.ofSeconds(10));
         typeTask.setValue("Ошибка");
         topicTask.setValue("123");
 
         visual.get(0).click();
-        visual.get(1).click();
 
+        iframe.shouldBe(visible, Duration.ofSeconds(10));
+        Selenide.switchTo().frame(iframe);
+        iframeElem.shouldBe(visible, Duration.ofSeconds(10)).setValue("Test");
+        Selenide.switchTo().defaultContent();
+
+        visual.get(1).click();
         version.click();
         createTask.click();
 
-        typeTask.shouldBe(exist, Duration.ofSeconds(5));
+    }
+    public void changeStatusTask() {
+
+        typeTask.shouldBe(exist, Duration.ofSeconds(10));
         inWork.click();
 
-        done.shouldBe(exist, Duration.ofSeconds(5));
+        done.shouldBe(exist, Duration.ofSeconds(10));
         bisProc.click();
 
-        done.shouldBe(enabled, Duration.ofSeconds(5));
-        done.click();
+        done.shouldBe(enabled, Duration.ofSeconds(10)).click();
 
-        doneButton.shouldBe(enabled, Duration.ofSeconds(5));
-        doneButton.click();
+        doneButton.shouldBe(enabled, Duration.ofSeconds(10)).click();
 
-        done.shouldNotBe(exist, Duration.ofSeconds(5));
-        comp.shouldBe(exist, Duration.ofSeconds(5));
+        done.shouldNotBe(exist, Duration.ofSeconds(10));
+        comp.shouldBe(exist, Duration.ofSeconds(10));
         bisProc.click();
 
-        comp.shouldBe(enabled, Duration.ofSeconds(5));
-        comp.click();
+        comp.shouldBe(enabled, Duration.ofSeconds(10)).click();
+    }
+    public void changeStatusCreateTask() {
 
-        bisProc.shouldNotBe(exist, Duration.ofSeconds(5));
+        this.createTask();
+        this.changeStatusTask();
+
+        bisProc.shouldNotBe(exist, Duration.ofSeconds(10));
         Assertions.assertEquals("ГОТОВО", status.getText(), "Задача не выполнена");
     }
 }

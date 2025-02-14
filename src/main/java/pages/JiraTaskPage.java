@@ -1,10 +1,9 @@
 package pages;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.Assertions;
 import java.time.Duration;
-import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class JiraTaskPage {
@@ -29,28 +28,23 @@ public class JiraTaskPage {
             as("Кнопка создать задачу");
 
     public void checkTasks() {
-        changeFilter.shouldBe(Condition.exist, Duration.ofSeconds(5));
-        changeFilter.click();
-        allTasks.shouldBe(Condition.exist, Duration.ofSeconds(5));
-        allTasks.click();
-        title.shouldBe(Condition.exist, Duration.ofSeconds(5));
+        changeFilter.shouldBe(visible, Duration.ofSeconds(10)).click();
+        allTasks.shouldBe(visible, Duration.ofSeconds(10)).click();
+        title.shouldBe(exist, Duration.ofSeconds(10));
         createButton.click();
 
-        typeTask.shouldBe(Condition.exist, Duration.ofSeconds(5));
+        typeTask.shouldBe(exist, Duration.ofSeconds(10));
         String firstString = showTasks.getText();
         String firstCount = firstString.split(" ")[2];
-        System.out.println("Количество элементов: " + firstCount);
         typeTask.setValue("Задача");
         topicTask.setValue("123");
         createTask.click();
 
         refresh.click();
-        showTasks.shouldNotHave(text(firstString), Duration.ofSeconds(5));
+        showTasks.shouldNotHave(text(firstString), Duration.ofSeconds(10));
         String secondString = showTasks.getText();
         String secondCount = secondString.split(" ")[2];
-        System.out.println("Количество элементов: " + secondCount);
 
         Assertions.assertNotEquals(firstCount, secondCount, "Задача не добавлена");
-
     }
 }

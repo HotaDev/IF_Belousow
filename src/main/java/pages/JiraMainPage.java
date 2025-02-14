@@ -1,11 +1,9 @@
 package pages;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.Assertions;
-
 import java.time.Duration;
-
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class JiraMainPage {
@@ -17,12 +15,10 @@ public class JiraMainPage {
             as("Открытые задачи");
 
     public void goProjTest() {
-        projectButton.shouldBe(Condition.exist, Duration.ofSeconds(5));
-        projectButton.click();
-        testButton.shouldBe(Condition.exist, Duration.ofSeconds(5));
-        testButton.click();
+        projectButton.shouldBe(visible, Duration.ofSeconds(10)).click();
+        testButton.shouldBe(visible, Duration.ofSeconds(10)).click();
 
-        projectText.shouldBe(Condition.exist, Duration.ofSeconds(5));
+        projectText.shouldBe(exist, Duration.ofSeconds(10));
         Assertions.assertTrue(projectText.exists(), "Переход не выполнен");
 
     }
