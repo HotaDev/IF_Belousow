@@ -51,6 +51,6 @@ public class JiraTest extends WebHooks {
         jiraTaskPage.checkTasks();
         jiraSearchPage.findTask("TestSeleniumATHomework");
         jiraMainPage.goProjTest();
-        jiraNewTaskPage. changeStatusCreateTask();
+        jiraNewTaskPage.changeStatusCreateTask();
     }
 }

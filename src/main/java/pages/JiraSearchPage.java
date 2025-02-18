@@ -19,15 +19,27 @@ public class JiraSearchPage {
     private final SelenideElement fixVersion = $x("//span[@class='shorten']/a").
             as("Исправить");
 
-    public void findTask(String task) {
-
+    public void clickAllTask() {
         allFilter.shouldBe(visible, Duration.ofSeconds(10)).click();
-        searchInput.shouldBe(visible, Duration.ofSeconds(10)).setValue(task);
-        buttonSearch.click();
-        String stat = status.getText();
-        String fix = fixVersion.getText();
+    }
 
-        Assertions.assertEquals("СДЕЛАТЬ", stat, "Задача не правильная");
-        Assertions.assertEquals("Version 2.0", fix, "Задача не правильная");
+    public void setValueSearch(String task) {
+        searchInput.shouldBe(visible, Duration.ofSeconds(10)).setValue(task);
+    }
+
+    public void clickSearch() {
+        buttonSearch.click();
+    }
+
+    public void checkData() {
+        Assertions.assertEquals("СДЕЛАТЬ", status.getText(), "Задача не правильная");
+        Assertions.assertEquals("Version 2.0", fixVersion.getText(), "Задача не правильная");
+    }
+
+    public void findTask(String task) {
+        clickAllTask();
+        setValueSearch(task);
+        clickSearch();
+        checkData();
     }
 }

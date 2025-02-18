@@ -15,11 +15,18 @@ public class JiraMainPage {
             as("Открытые задачи");
 
     public void goProjTest() {
+        clickProjTest();
+        checkTitleTest();
+    }
+
+    public void clickProjTest() {
         projectButton.shouldBe(visible, Duration.ofSeconds(10)).click();
         testButton.shouldBe(visible, Duration.ofSeconds(10)).click();
+    }
 
+    public void checkTitleTest() {
         projectText.shouldBe(exist, Duration.ofSeconds(10));
         Assertions.assertTrue(projectText.exists(), "Переход не выполнен");
-
     }
+
 }

@@ -14,15 +14,22 @@ public class JiraLoginPage {
     private final SelenideElement projectButton = $x("//a[text()='Проекты']").as("Кнопка Проекты");
 
     public void authJira(String login, String pass) {
-        this.login(login, pass);
-        inputButton.click();
-
-        projectButton.shouldBe(exist, Duration.ofSeconds(10));
-        Assertions.assertTrue(projectButton.exists(), "Вход не выполнен");
-
+        setLoginData(login, pass);
+        clickLogin();
+        checkAuth();
     }
-    public void login(String login, String pass) {
+
+    public void setLoginData(String login, String pass) {
         inputLogin.shouldBe(visible, Duration.ofSeconds(10)).setValue(login);
         inputPassword.setValue(pass);
+    }
+
+    public void clickLogin() {
+        inputButton.click();
+    }
+
+    public void checkAuth() {
+        projectButton.shouldBe(exist, Duration.ofSeconds(10));
+        Assertions.assertTrue(projectButton.exists(), "Вход не выполнен");
     }
 }
