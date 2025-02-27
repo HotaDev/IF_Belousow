@@ -1,5 +1,6 @@
 package Tests;
 
+import configReader.ConfReader;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
@@ -9,24 +10,24 @@ import reqres.api.ReqApi;
 import reqres.steps.ReqSteps;
 
 import static org.hamcrest.Matchers.equalTo;
-import static reqres.constants.EnvConst.FILE_PATH;
-import static reqres.constants.EnvConst.REQ_URL;
 
 
 public class SecondTest {
 
     private final ReqApi reqApi = new ReqApi();
     private final ReqSteps reqSteps = new ReqSteps();
+    private static final String reqRNM = ConfReader.getProperty("req.url");
+    private static final String filePath = ConfReader.getProperty("file.path");
 
     @BeforeAll
     public static void setUp() {
-        RestAssured.baseURI = REQ_URL;
+        RestAssured.baseURI = reqRNM;
     }
 
     @Test
     @DisplayName("Проверка Post-запроса")
     public void checkPostReq() {
-        Response response = reqApi.getResponse(reqSteps.editFile(FILE_PATH));
+        Response response = reqApi.getResponse(reqSteps.editFile(filePath));
         response.then()
                 .statusCode(201)
                 .body("name", equalTo("Tomato"))
