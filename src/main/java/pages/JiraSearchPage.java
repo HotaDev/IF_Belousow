@@ -1,8 +1,11 @@
 package pages;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
+
 import java.time.Duration;
+
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
 
@@ -19,15 +22,32 @@ public class JiraSearchPage {
     private final SelenideElement fixVersion = $x("//span[@class='shorten']/a").
             as("Исправить");
 
-    public void findTask(String task) {
-
+    @Step("Нажать на кнопку 'Посмотреть все задачи и фильтры'")
+    public void clickAllTask() {
         allFilter.shouldBe(visible, Duration.ofSeconds(10)).click();
-        searchInput.shouldBe(visible, Duration.ofSeconds(10)).setValue(task);
-        buttonSearch.click();
-        String stat = status.getText();
-        String fix = fixVersion.getText();
+    }
 
-        Assertions.assertEquals("СДЕЛАТЬ", stat, "Задача не правильная");
-        Assertions.assertEquals("Version 2.0", fix, "Задача не правильная");
+    @Step("ввести в поле поиска {task}")
+    public void setValueSearch(String task) {
+        searchInput.shouldBe(visible, Duration.ofSeconds(10)).setValue(task);
+    }
+
+    @Step("Нажать на кнопку 'Поиск'")
+    public void clickSearch() {
+        buttonSearch.click();
+    }
+
+    @Step("Проверить статусы задачи")
+    public void checkData() {
+        Assertions.assertEquals("СДЕЛАТЬ", status.getText(), "Задача не правильная");
+        Assertions.assertEquals("Version 2.0", fixVersion.getText(), "Задача не правильная");
+    }
+
+    @Step("Поиск задачи {task}")
+    public void findTask(String task) {
+        clickAllTask();
+        setValueSearch(task);
+        clickSearch();
+        checkData();
     }
 }
