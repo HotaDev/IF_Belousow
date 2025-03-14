@@ -1,39 +1,37 @@
 package rick.steps;
 
-import io.restassured.path.json.JsonPath;
-import rick.api.RnMApi;
+import io.cucumber.java.ru.Затем;
+import io.cucumber.java.ru.Когда;
+import io.cucumber.java.ru.Тогда;
+import io.qameta.allure.Step;
+import org.junit.jupiter.api.Assertions;
+import rick.services.RnMServices;
+
+import java.util.Objects;
 
 public class RnMSteps {
+    private final RnMServices services = new RnMServices();
+    private String[] charOne;
+    private String[] charTwo;
 
-    private final RnMApi api = new RnMApi();
 
-    public String[] lastEpisodeByChar(String name) {
-        JsonPath obj = api.getJsonPath("/character/?name=" + name);
-        return new String[]{
-                obj.getString("results[0].species"),
-                obj.getString("results[0].location.name"),
-                getLastElem(obj, "results[0].episode[-1]")
-        };
+    @Когда("^запросить информации о персонаже '(.*)' и выбрать информацию о расе, местонахождении и последним эпизоде")
+    @Step("Запросить информацию по персонажу {character}")
+    public void findFirstCharInfo(String character) {
+        charOne = services.lastEpisodeByChar(character);
     }
 
-    public String lastCharByEpisode(String episode) {
-        return getLastElem(
-                api.getJsonPath("/episode/" + episode),
-                "characters[-1]"
-        );
+    @Затем("^выбрать из последнего эпизода последнего персонажа и выбрать информацию о расе, местонахождении")
+    @Step("Затем запросить информацию по другому персонажу")
+    public void findSecondCharInfo() {
+        charTwo = services.getInfoChar(services.lastCharByEpisode(charOne[2]));
     }
 
-    public String[] getInfoChar(String character) {
-        JsonPath obj = api.getJsonPath("/character/" + character);
-        return new String[]{
-                obj.getString("species"),
-                obj.getString("location.name")
-        };
+    @Тогда("^сравнить расу и местонахождение персонажей")
+    @Step("Сравнить персонажей")
+    public void compareChar() {
+        Assertions.assertFalse(Objects.equals(charOne[0], charTwo[0])
+                && Objects.equals(charOne[1], charTwo[1]));
     }
 
-    public String getLastElem(JsonPath obj, String path) {
-        String url = obj.getString(path);
-        String[] splitUrl = url.split("/");
-        return splitUrl[splitUrl.length - 1];
-    }
 }

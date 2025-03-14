@@ -1,4 +1,4 @@
-package configReader;
+package utilities;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,7 +8,7 @@ public class ConfReader {
     public static final Properties prop = new Properties();
 
     static {
-        try (InputStream input = ConfReader.class.getClassLoader().getResourceAsStream("config.properties")) {
+        try (InputStream input = ConfReader.class.getClassLoader().getResourceAsStream("config/config.properties")) {
             prop.load(input);
         } catch (IOException e) {
             throw new RuntimeException(e);

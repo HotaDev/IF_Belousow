@@ -1,23 +1,32 @@
 package reqres.steps;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.cucumber.java.ru.Когда;
+import io.cucumber.java.ru.Тогда;
+import io.qameta.allure.Step;
+import io.restassured.response.Response;
+import reqres.api.ReqApi;
+import reqres.services.ReqServices;
 
-import java.io.File;
-import java.io.IOException;
+import static org.hamcrest.Matchers.equalTo;
 
 public class ReqSteps {
+    private final ReqServices reqSteps = new ReqServices();
+    private final ReqApi reqApi = new ReqApi();
+    private Response response;
 
-    public ObjectNode editFile(String path) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            ObjectNode objectNode = (ObjectNode) objectMapper.readTree(new File(path));
-            objectNode.put("name", "Tomato");
-            objectNode.put("job", "Eat maket");
-            return objectNode;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    @Step("Запрос из файла ")
+    @Когда("^создать запрос из файла '(.*)' и поменять в нем значения")
+    public void filterAllTasksStep(String name) {
+        response = reqApi.getResponse(reqSteps.editFile(name));
+    }
+
+    @Step("Проверка ответа")
+    @Тогда("^проверить код ответа '(.*)' и информацию")
+    public void refreshCheckStep(int code) {
+        response.then()
+                .statusCode(code)
+                .body("name", equalTo("Tomato"))
+                .and()
+                .body("job", equalTo("Eat maket"));
     }
 }
