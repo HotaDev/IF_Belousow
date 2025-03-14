@@ -48,14 +48,14 @@ public class JiraNewTaskPage extends JiraTaskPage {
 
     @Step("Нажать на кнопку 'Создать'")
     public void clickCreate() {
-        title.shouldBe(exist, Duration.ofSeconds(10));
+        title.shouldBe(visible, Duration.ofSeconds(10));
         createButton.click();
     }
 
     @Step("ввести данные о задаче Тип: {type}, Тема: {topic}, Описание: {desc}")
     public void setValueTask(String type, String topic, String desc) {
-        typeTask.shouldBe(visible, Duration.ofSeconds(10));
-        typeTask.sendKeys(Keys.CONTROL + "a");
+        typeTask.shouldBe(visible, Duration.ofSeconds(10))
+                .sendKeys(Keys.CONTROL + "a");
         typeTask.sendKeys(Keys.DELETE);
         typeTask.setValue(type);
         topicTask.setValue(topic);
@@ -80,12 +80,12 @@ public class JiraNewTaskPage extends JiraTaskPage {
     public void doneStat() {
         done.shouldBe(exist, Duration.ofSeconds(10));
         bisProc.click();
-        done.shouldBe(enabled, Duration.ofSeconds(10)).click();
+        done.shouldBe(visible, Duration.ofSeconds(10)).click();
     }
 
-    @Step("Подтвердить дествие нажав на кнопку 'Исполнено'")
+    @Step("Подтвердить действие нажав на кнопку 'Исполнено'")
     public void acceptDoneStat() {
-        doneButton.shouldBe(enabled, Duration.ofSeconds(10)).click();
+        doneButton.shouldBe(visible, Duration.ofSeconds(10)).click();
     }
 
     @Step("Открыть 'Бизнес-процесс' и нажать на кнопку 'Выполнено'")
@@ -99,7 +99,7 @@ public class JiraNewTaskPage extends JiraTaskPage {
 
     @Step("Проверить 'статус задачи - Готово'")
     public void checkCompStat() {
-        bisProc.shouldNotBe(exist, Duration.ofSeconds(10));
+        bisProc.shouldNotBe(visible, Duration.ofSeconds(10));
         Assertions.assertEquals("ГОТОВО", status.getText(), "Задача не выполнена");
     }
 

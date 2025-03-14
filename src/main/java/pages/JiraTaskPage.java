@@ -7,7 +7,8 @@ import org.openqa.selenium.Keys;
 
 import java.time.Duration;
 
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class JiraTaskPage {
@@ -40,11 +41,11 @@ public class JiraTaskPage {
 
     @Step("Нажать на кнопку 'Создать'")
     public void createAndCheck() {
-        title.shouldBe(exist, Duration.ofSeconds(10));
+        title.shouldBe(visible, Duration.ofSeconds(10));
         createButton.click();
 
-        typeTask.shouldBe(exist, Duration.ofSeconds(10));
-        this.countTask = showTasks.getText();
+        typeTask.shouldBe(visible, Duration.ofSeconds(10));
+        countTask = showTasks.getText();
     }
 
     @Step("Ввести для задачи Тип: {type} и Тема: {topic}")
@@ -64,9 +65,9 @@ public class JiraTaskPage {
     @Step("Проверить, что количество всех задач увеличилось")
     public void refreshCheck() {
         refresh.click();
-        showTasks.shouldNotHave(text(this.countTask), Duration.ofSeconds(10));
+        showTasks.shouldNotHave(text(countTask), Duration.ofSeconds(10));
 
-        String firstCountTasks = this.countTask.split(" ")[2];
+        String firstCountTasks = countTask.split(" ")[2];
         String enotherString = showTasks.getText();
         String enotherCountTasks = enotherString.split(" ")[2];
 

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions;
 
 import java.time.Duration;
 
-import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
 
@@ -32,7 +31,7 @@ public class JiraMainPage {
 
     @Step("Происходит переход в проект 'Test'")
     public void checkTitleTest() {
-        projectText.shouldBe(exist, Duration.ofSeconds(10));
+        projectText.shouldBe(visible, Duration.ofSeconds(10));
         Assertions.assertTrue(projectText.exists(), "Переход не выполнен");
     }
 }
